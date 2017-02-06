@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新闻懒加载</title>
+	<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+<style>
+	ul,body,h3{
+		padding: 0;
+		margin: 0;
+	}
+	.wrap{
+		margin: 0 auto;
+		width: 600px;
+		margin-top: 50px;
+	}
+	.clear:after{
+		content: '';
+		display: block;
+		clear: both;
+	}
+	li{
+		list-style: none;
+		padding: 20px 0;
+		border-top: 1px solid #f0f0f0;
+	}
+	.btn-img{
+		float: left;
+	}
+	.wrap a{
+		display: block;
+	}
+	.wrap img{
+		width: 150px;
+		height: 120px;
+	}
+	a{
+		text-decoration: none;
+	}
+	.words{
+		margin-left: 170px;
+		color: #222222;
+	}
+	.words:hover{
+		color:#cd0001;
+	}
+	.loading{
+		text-align: center;
+		visibility: hidden;
+	}
+	.loading img{
+		height:50px;
+		width: 80px;
+	}
+	.info{
+		text-align: center;
+	}
+</style>
+<body>
+	<ul class="wrap clear">
+		<li class="clear">
+			<a class="btn-img" href="#">
+				<img src="http://inews.gtimg.com/newsapp_ls/0/1105046567_12088/0" alt="">
+			</a>
+			<a class='words' href="#">
+				<h3>携病人出走医生：我就跳个槽 怎么弄出这么大动静</h3>
+			</a>
+		</li>
+
+		<li class="clear">
+			<a class="btn-img" href="#">
+				<img src="http://inews.gtimg.com/newsapp_ls/0/1105035022_12088/0" alt="">
+			</a>
+			<a class='words' href="#">
+				<h3>男子酒驾被查获 摸出一叠百元大钞行贿警察</h3>
+			</a>
+		</li>
+
+		<li class="clear">
+			<a class="btn-img" href="#">
+				<img src="http://inews.gtimg.com/newsapp_ls/0/1105041201_12088/0" alt="">
+			</a>
+			<a class='words' href="#">
+				<h3>台北发生3死1伤命案：疑为父亲杀3名小孩后自杀</h3>
+			</a>
+		</li>
+		<li class="clear">
+			<a class="btn-img" href="#">
+				<img src="http://inews.gtimg.com/newsapp_ls/0/1104975124_150120/0" alt="">
+			</a>
+			<a class='words' href="#">
+				<h3>天津全面启动人口密集区危化品生产企业搬迁工程</h3>
+			</a>
+		</li>
+		<li class="clear">
+			<a class="btn-img" href="#">
+				<img src="http://inews.gtimg.com/newsapp_ls/0/1104083516_150120/0" alt="">
+			</a>
+			<a class='words' href="#">
+				<h3>韩国特检组：争取一周内当面讯问总统朴槿惠</h3>
+			</a>
+		</li>
+		<li class="clear">
+			<a class="btn-img" href="#">
+				<img src="http://inews.gtimg.com/newsapp_ls/0/1103324741_150120/0" alt="">
+			</a>
+			<a class='words' href="#">
+				<h3>天文学家警告：月球将撞上地球 不过在650亿年后</h3>
+			</a>
+		</li>
+		<li class="clear">
+			<a class="btn-img" href="#">
+				<img src="http://inews.gtimg.com/newsapp_ls/0/1104083516_150120/0" alt="">
+			</a>
+			<a class='words' href="#">
+				<h3>韩国特检组：争取一周内当面讯问总统朴槿惠</h3>
+			</a>
+		</li>
+		<li class="clear">
+			<a class="btn-img" href="#">
+				<img src="http://inews.gtimg.com/newsapp_ls/0/1104975124_150120/0" alt="">
+			</a>
+			<a class='words' href="#">
+				<h3>天津全面启动人口密集区危化品生产企业搬迁工程</h3>
+			</a>
+		</li>
+	</ul>
+	<div class="loading"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1486323975708&di=a86298a2867650fabe3ae426a441119d&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01443f564897a432f87512f6eed753.gif" alt=""></div>
+	
+<script>
+	var $loading=$('.loading');
+	var page=0;
+	var isGetNews=true;//这是一个ajax开关
+	$(window).on('scroll',function(){
+
+		if(isVisibility($loading) && isGetNews){
+
+			isGetNews=!isGetNews;
+			getNews($loading);
+
+		}
+
+	})
+
+	function getNews ($node){
+
+			$.ajax({
+				type:'GET',
+				url:'/getNews',
+				data:{
+					pageIndex:page
+				}
+			}).done(function(ret){
+				
+				isGetNews=!isGetNews;
+				
+				page+=1;
+				if(ret.status===0){		
+					if(ret.data.length===0){
+						
+						$node.remove();
+
+						$(document.body).append('<p class="info">没有更多数据了</p>')
+					
+					}else{					
+			
+						$node.css('visibility','visible');
+			
+						dealWith(ret.data);
+										
+					}
+				}	
+			})
+		
+	}
+
+	function dealWith(data){
+		
+		for(var i=0; i<data.length; i++){
+			var str='';
+			str+="<li class='clear'><a class='btn-img' href='#'>"
+			str+="<img src='"+ data[i].url +"'>"
+			str+="</a><a class='words' href='#''><h3>";
+			str+=data[i].words;
+			str+="</a></li>"
+
+			$('.wrap').append(str);
+		}
+
+
+	}
+
+	function isVisibility ($node){
+		var scrollTop=$(window).scrollTop(),
+			screenHeight=$(window).height(),
+			$nodeHeight=$node.height(),
+			offsetTop=$node.offset().top;
+			if(scrollTop+screenHeight>offsetTop && scrollTop<offsetTop+$nodeHeight) return true;
+			return false;
+	}
+
+</script>
+</body>
+</html>
