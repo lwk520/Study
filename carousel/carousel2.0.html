@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>无限轮播</title>
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+<style>
+	body{
+		padding: 0;
+		margin: 0;
+		background-color: #cce8cf;
+	}
+	ul,li{
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+	a{
+		text-decoration: none;
+		display: block;
+	}
+	.clear:after{
+		content: '';
+		display: block;
+		clear: both;
+	}
+	.carousel{
+		position: relative;
+		top:300px;
+		margin: 0 auto;
+		width: 480px;
+		height: 360px;
+	}
+	
+
+	.imgCt li{
+		z-index: -1;
+		position: absolute;
+	}
+	.imgCt img{
+		width: 480px;
+		height: 360px;
+	}
+	.btn-tab li{
+		position:absolute;
+		z-index: 100;
+		top:50%;
+		margin-top: -20px;
+		width: 40px;
+		height: 40px;
+		border-radius: 20px;
+		background-color: rgba(51,51,51,0.6);
+		line-height: 40px;
+		text-align: center;
+		font-size: 30px;
+		font-weight: bolder;
+		
+	}
+	.btn-tab li:hover{
+		background-color: rgba(78,68,60,1);
+	}
+	.btn-tab a{
+		color: #fff;
+	}
+	.tab-pre{
+		left: 10px;
+	}
+	.tab-next{
+		right: 10px;
+	}
+
+	.btn-bullet{
+		position: absolute;
+		bottom:20px;
+		left: 50%;
+		margin-left: -44px;
+		z-index: 100;
+	}
+	.btn-bullet li{
+		float: left;
+		margin-left: 6px;
+		width: 16px;
+		height: 4px;
+		background-color: #fff;
+		border-radius: 4px;
+		cursor: pointer;
+	}
+
+	.tiny-img{
+		position: absolute;
+		bottom: -100px;
+	}
+	.tiny-img li{
+		float: left;
+		margin-right: 8px;
+	}
+	.tiny-img li:hover .mask{
+		display: none;
+	}
+	.tiny-img > li:last-child{
+		margin-right: 0;
+	}
+	.tiny-img img{
+		width: 114px;
+		height: 90px;
+	}
+	.tiny-img .mask{
+		position: absolute;
+		width: 114px;
+		height: 90px;
+		background-color: #fff;
+		opacity: 0.6;
+	}
+	/* DOM - class */
+	.btn-bullet .active{
+		background-color: #666666;
+	}
+	.imgCt .img-show{
+		z-index: 99;
+	}
+	.imgCt .willshow{
+		z-index: 98;
+	}
+</style>
+</head>
+<body>
+	<div class="carousel">
+		<ul class="imgCt">
+	 		<li class="img-show"><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/5.jpg" alt="#"></a></li>	
+	 		<li><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/6.jpg" alt="#"></a></li>
+	 		<li><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/7.jpg" alt="#"></a></li>
+	 		<li><a href="#"><img src="http://cdn.jirengu.com/book.jirengu.com/img/8.jpg" alt="#"></a></li>
+		</ul>
+		<ul class="btn-tab">
+			<li class="tab-pre"><a href="javascript:;"><</a></li>
+			<li class="tab-next"><a href="javascript:;">></a></li>
+		</ul>
+		<ul class="btn-bullet">
+			<li class="active"><a href="javascript:;"></a></li>
+			<li><a href="javascript:;"></a></li>
+			<li><a href="javascript:;"></a></li>
+			<li><a href="javascript:;"></a></li>
+		</ul>
+		<ul class="tiny-img">
+			<li>
+				<div class="mask"></div>
+				<a href="javascript:;">
+					<img src="http://cdn.jirengu.com/book.jirengu.com/img/5.jpg" alt="">
+				</a>
+			</li>
+			<li>
+				<div class="mask"></div>
+				<a href="javascript:;">
+					<img src="http://cdn.jirengu.com/book.jirengu.com/img/6.jpg" alt="">
+				</a>
+			</li>
+			<li>
+				<div class="mask"></div>
+				<a href="javascript:;">
+					<img src="http://cdn.jirengu.com/book.jirengu.com/img/7.jpg" alt="">
+				</a>
+			</li>
+			<li>
+				<div class="mask"></div>
+				<a href="javascript:;">
+					<img src="http://cdn.jirengu.com/book.jirengu.com/img/8.jpg" alt="">
+				</a>
+			</li>
+
+		</ul>	
+	</div>
+<script>
+
+	var	$carousel=$('.carousel'),
+		$imgCt=$('.imgCt'),
+		$img=$imgCt.find('img'),
+		$imgList=$imgCt.find('li'),
+		$list=$('.tiny-img li'),
+		len=$list.length,
+		$pre=$('.tab-pre'),
+		$next=$('.tab-next'),
+		$bulletList=$('.btn-bullet li');
+	
+
+
+	function fadePre(n){
+		
+		if(!onOff){return ;}
+		onOff=false;
+		
+		var nowShow=$imgCt.find('.img-show');
+		var imgIndex=nowShow.index();
+
+		if(imgIndex==0){
+			$imgList.eq(len-1).addClass('willshow')
+		}else{
+			$imgList.eq(imgIndex-n).addClass('willshow')
+		}
+		nowShow.fadeOut(function(){
+
+			$(this).removeClass('img-show').css('display','block');;
+
+			$imgCt.find('.willshow').removeClass('willshow').addClass('img-show')
+			/*完成之后给将要展现的图片设置为show同时把willshow去掉*/
+			bulletCut();			
+
+			onOff=true;
+		})
+	}
+
+	function fadeNext (n){
+
+		if(!onOff){return ;}
+		onOff=false;
+
+		var nowShow=$imgCt.find('.img-show');
+		var imgIndex=nowShow.index();
+
+		if(imgIndex==3){
+			$imgList.eq(0).addClass('willshow')
+		}else{
+			$imgList.eq(imgIndex+n).addClass('willshow')
+		}
+		nowShow.fadeOut(function(){
+
+			$(this).removeClass('img-show').css('display','block')
+
+			$imgCt.find('.willshow').removeClass('willshow').addClass('img-show');
+			bulletCut();
+			onOff=true;
+		})
+	}
+
+	function bulletCut (){
+		$('.btn-bullet li').removeClass('active')
+						   .eq($imgCt.find('.img-show').index())
+						   .addClass('active')
+	}
+
+
+
+	function tabCut(p){
+		var nowShow=$imgCt.find('.img-show');
+		
+		var imgIndex=nowShow.index(); 
+
+		var preIndex=p;
+
+		var distance=preIndex-imgIndex;
+
+		if(distance>0){
+			fadeNext(distance);
+		}else if(distance<0){
+			fadePre(-distance)
+		}else if(distance===0){
+			return;
+		}
+	}
+
+	function carouselAuto (){
+
+		clearInterval(timer);
+
+		timer=setInterval(function(){
+
+			fadeNext(1);
+
+		}, 1500)
+
+	}
+	/*
+		初始定时器
+	 */
+
+	var timer=null;
+
+	var onOff=true;
+
+	carouselAuto();
+
+	/*事件添加*/
+ 
+	$pre.on('click',function(){
+		
+			fadePre(1);
+	})
+
+	$next.on('click',function(){
+
+		fadeNext(1);
+	})
+
+	$list.on('click',function(){
+
+		clearInterval(timer);
+
+		tabCut($(this).index());
+
+	})
+
+	$bulletList.on('click',function(){
+
+		tabCut($(this).index());
+	
+	})
+	$carousel.on('mouseenter', ' li' ,function(){
+		clearInterval(timer);
+	})
+	$carousel.on({
+		mouseout:function(){ carouselAuto() }
+	})
+
+</script>
+</body>
+</html>
