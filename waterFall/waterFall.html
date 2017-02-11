@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>瀑布流布局</title>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<style>
+	.wrap{
+		position: relative;
+	}
+	.wrap .item{
+		position: absolute;
+		margin: 10px;
+		width: 200px;
+	}
+	.wrap .h1{
+		background-color: #f4b300;
+		height: 250px;
+	}
+	.wrap .h2{
+		background-color: #006ac1;
+		height: 350px;
+	}
+	.wrap .h3{
+		background-color: #691bb8;
+		height: 200px;
+	}
+	.wrap .h4{
+		background-color: #e3a05c;
+		height: 400px;
+	}
+	.wrap .h5{
+		background-color: #84af9b;
+		height: 150px;
+	}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="item h1">1</div>
+		<div class="item h2">2</div>
+		<div class="item h3">3</div>
+		<div class="item h4">4</div>
+		<div class="item h5">5</div>
+		<div class="item h1">6</div>
+		<div class="item h2">7</div>
+		<div class="item h4">8</div>
+		<div class="item h2">9</div>
+		<div class="item h5">10</div>
+		<div class="item h2">11</div>
+		<div class="item h4">12</div>
+		<div class="item h2">13</div>
+		<div class="item h1">14</div>
+		<div class="item h2">15</div>
+		<div class="item h3">16</div>
+		<div class="item h4">17</div>
+	</div>
+<script>
+
+var water=(function(){
+		function render(){	
+			var $wrap=$('.wrap'),
+				$item=$wrap.find('.item')		
+			var itemWidth=$item.eq(0).outerWidth(true);
+			var num=Math.floor($(window).width()/itemWidth);
+			var itemHeight=[];
+			var minIndex=0;
+			var minHeight=0;
+
+			/*找出最小的一行*/
+			function findMin(){
+				for(var i=0; i<num; i++){
+					if(itemHeight[minIndex]>itemHeight[i]){
+						minIndex=i;
+					}
+				}
+				minHeight=itemHeight[minIndex];
+			}
+
+			/*刚开始第一行按顺序排开*/
+			for(var i=0; i<num; i++){
+				itemHeight.push(0)
+			}
+
+			for(var i=0; i<$item.length; i++){
+				findMin();
+				$item.eq(i).css({
+					left: minIndex*itemWidth,
+					top: minHeight
+				})
+				itemHeight[minIndex]+=$item.eq(i).outerHeight(true)
+			}
+		}
+		window.onresize=function(){
+			render();
+		}
+		return {
+			init:render
+		};
+	}())
+ 	water.init()
+
+
+
+</script>
+</body>
+</html>
