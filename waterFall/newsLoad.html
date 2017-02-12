@@ -8,11 +8,6 @@
 	a{
 		display: block;
 	}
-	.wrap:after{
-		content: '';
-		display: block;
-		clear: both;
-	}
 	.wrap{
 		position: relative;
 		height: 0px;
@@ -54,9 +49,62 @@
 	<div class="loadmore"></div>
 <script>
 
+//瀑布流布
+		function render(){	
+			var $wrap=$('.wrap').eq(0),
+				$item=$wrap.find('.item')		
+			var itemWidth=$item.eq(0).outerWidth(true);
+			var num=Math.floor($wrap.width()/itemWidth);
+			var itemHeight=[];
+			var minIndex=0;
+			var minHeight=0;
+			var maxIndex=0;//解决元素高度坍塌
+			/*找出最小的一行*/
+			function findMin(){
+				for(var i=0; i<num; i++){
+					if(itemHeight[minIndex]>itemHeight[i]){
+						minIndex=i;
+					}
+				}
+				minHeight=itemHeight[minIndex];
+			}
+
+			/*刚开始第一行按顺序排开*/
+			for(var i=0; i<num; i++){
+				itemHeight.push(0)
+			}
+
+			for(var i=0; i<$item.length; i++){
+				findMin();
+				$item.eq(i).css({
+					left: minIndex*itemWidth,
+					top: minHeight
+				})
+				itemHeight[minIndex]+=$item.eq(i).outerHeight(true)
+				console.log($item.eq(i).outerHeight(true))
+			}
+			// console.log(num)
+
+			//解决元素高度坍塌
+			for(var i=0; i<num; i++){
+				if(itemHeight[maxIndex]<itemHeight[i]){
+					maxIndex=i;
+				}
+			}
+			$wrap.height(itemHeight[maxIndex])
+		}
+
+/*		window.onresize=function(){
+			render();
+		}*/
+
+
+
+
+
 	function JSONP (){
 		var script=document.createElement('script')
-		script.src='http://platform.sina.com.cn/slide/album_tech?jsoncallback=dealWidth&app_key=1271687855&num=3&page=4';
+		script.src='https://platform.sina.com.cn/slide/album_tech?jsoncallback=dealWidth&app_key=1271687855&num=3&page=4';
 		document.body.append(script);
 		document.body.removeChild(script)
 	}
@@ -95,64 +143,14 @@
 			str+='<p>'+data[i].short_intro+'</p></div>'
 
 			$('.wrap').append(str);
-			water.init();
+			console.log('长度是：'+ $('.item').length)
+			
+			/*等到所有IMG图片加载完成后获取的高度才是正确的*/
+			$('img').on('load',function(){
+				render();
+			})
 		}
 	}
-
-//瀑布流布局
-	var water=(function(){
-		function render(){	
-			var $wrap=$('.wrap'),
-				$item=$wrap.find('.item')		
-			var itemWidth=$item.eq(0).outerWidth(true);
-			var num=Math.floor($wrap.width()/itemWidth);
-			var itemHeight=[];
-			var minIndex=0;
-			var minHeight=0;
-			var maxIndex=0;//解决元素高度坍塌
-
-			/*找出最小的一行*/
-			function findMin(){
-				for(var i=0; i<num; i++){
-					if(itemHeight[minIndex]>itemHeight[i]){
-						minIndex=i;
-					}
-				}
-				minHeight=itemHeight[minIndex];
-			}
-
-			/*刚开始第一行按顺序排开*/
-			for(var i=0; i<num; i++){
-				itemHeight.push(0)
-			}
-
-			for(var i=0; i<$item.length; i++){
-				findMin();
-				$item.eq(i).css({
-					left: minIndex*itemWidth,
-					top: minHeight
-				})
-				itemHeight[minIndex]+=$item.eq(i).outerHeight(true)
-			}
-
-			//解决元素高度坍塌
-			for(var i=0; i<num; i++){
-				if(itemHeight[maxIndex]<itemHeight[i]){
-					maxIndex=i;
-				}
-			}
-			$wrap.height(itemHeight[maxIndex])
-
-
-		}
-		window.onresize=function(){
-			render();
-		}
-		return {
-			init:render
-		};
-	}())
- 	//setTimeout(water.init,0)
 
 
 
