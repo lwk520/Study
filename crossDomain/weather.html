@@ -16,7 +16,7 @@
 	var btn=document.querySelector('.btn');
 	btn.addEventListener('click', function(){
 		var oScript=document.createElement('script');
-		oScript.src='http://jirenguapi.applinzi.com/weather.php?callback=getCity'
+		oScript.src='https://jirenguapi.applinzi.com/weather.php?callback=getCity'
 		document.head.appendChild(oScript);
 		document.head.removeChild(oScript);
 	})
