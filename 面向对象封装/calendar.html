@@ -10,6 +10,7 @@
 		width: 400px;
 		border:1px solid #ccc;
 		text-align: center;
+		display: none;
 	}
 
 
@@ -52,14 +53,26 @@
 	.hide{
 		display: none;
 	}
+	.appoint-mod{
+		position: absolute;
+		top:40px;
+		left: 0;
+	}
+	.now-mod{
+		position: absolute;
+		top:40px;
+		left: 185px;
+		z-index:100;
+	}
+	table.main *{
+		background-color: #fff;
+	}
 </style>
 <body>
-	<div class="calendar">
-		
-	</div>
-	<div class="calendar">
-		
-	</div>
+	<input class="appoint" type="text" placeholder="这是指定日期为2016年12月">
+	<input class="now" type="text" placeholder="这是当前年月">
+	<div class="appoint-mod calendar"></div>
+	<div class="now-mod calendar"></div>
 <script>
 /*	function isDouble (n) {
 		var str=n+'';
@@ -142,10 +155,12 @@
 	})*/
 
 //---------封装
+function callback(data){
+	alert(data)
+}
 var calendarModel=(function(){
 
 	function Calendar($ct,year,month){
-
 		this.$ct=$ct;
 		if(year){
 			this.year=year;
@@ -248,7 +263,8 @@ var calendarModel=(function(){
 						})
 
 						this.$ct.find('.cur-month').on('click',function(){
-							console.log(self.year+ '/' +self.month+ '/' +this.innerText)
+							self.$ct.hide();
+							callback(self.year+ '/' +self.month+ '/' +this.innerText)
 						})
 
 					},
@@ -259,19 +275,30 @@ var calendarModel=(function(){
 							str='0'+str;
 						}
 						return str
-					}
-	}
+					},
+}
 
 	return{
 		init: function($ct,year,month){
 			$ct.each(function(){
-				new Calendar($(this),year,month)
-			})		}
+				new Calendar($(this),year,month,callback)
+			})
+		}
 	}
 }())
+calendarModel.init($('.calendar').eq(0),2016,12)
+calendarModel.init($('.calendar').eq(1))
 
-//
-calendarModel.init($('.calendar'))
+$('.appoint').on('click',function(){
+	console.log(this)
+	$('.calendar').eq(0).show();
+})
+$('.now').on('click',function(){
+	$('.calendar').eq(1).show();
+})
+
+
+
 </script>
 </body>
 </html>
