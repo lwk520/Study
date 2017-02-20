@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>日历组件</title>
+</head>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<style>
+	.calendar{
+		width: 400px;
+		border:1px solid #ccc;
+		text-align: center;
+	}
+
+
+	.header{
+		position: relative;
+		background-color: #ca2b2b;
+		line-height: 36px;
+		color:#fff;
+	}
+
+	.pre,.next{
+		position:absolute;
+		cursor: pointer;
+		border:10px solid #fff;
+		top:7px;
+	}
+	.pre{
+		left: 16px;
+		border-color: transparent #fff transparent transparent;
+	}
+	
+	.next{
+		right: 16px;
+		border-color: transparent transparent transparent #fff;
+	}
+
+	.main{
+		width: inherit;
+	}
+	
+	.main .next-month, .main .pre-month{
+		color: #ccc;
+	}
+	.main .cur-month{
+		cursor: pointer;
+	}
+	.main .cur-month:hover{
+		background-color: pink;
+	}
+	.hide{
+		display: none;
+	}
+</style>
+<body>
+	<div class="calendar">
+		
+	</div>
+	<div class="calendar">
+		
+	</div>
+<script>
+/*	function isDouble (n) {
+		var str=n+'';
+		if(str.length<2){
+			str='0'+str;
+		}
+		return str
+	}*/
+
+// n = 2  n1 
+/*	var year= 2017;
+	var month=2;
+	//初始化：
+		$('.calendar').html('<div class="header"><div class="header-date">2017年2月</div><div class="pre"></div><div class="next"></div></div><table class="main"></table>')
+		$('.main').append('<thead><tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr></thead>')
+		var $tbody=$(document.createElement('tbody'))
+		for(var i=0; i<6; i++){
+			$tbody.html($tbody.html()+'<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>')
+		}
+
+		$('.main').append($tbody);
+	function calendar(){
+		$('.main td').removeClass().empty();*/
+
+		
+
+		//-----
+		/*if(!year) year=new Date().getFullYear();
+		if(!month) {month=new Date().getMonth()}else{month--};*/
+/*
+		$('.header-date').text(year+'年'+(month)+'月')
+
+		var curMon=month-1,
+			curFirstDay=new Date(year,curMon,1),
+			preLastDay= new Date(year,curMon,0),
+			curLastDay=new Date(year,curMon+1,0);
+		var curLen=curLastDay.getDate();	
+
+		for (var i=0; i<curLen; i++){
+			//知道第一天的位置还有这个月的天数。
+			$('.main td').eq(curFirstDay.getDay()+i)
+						 .text(isDouble(i+1))
+						 .addClass('cur-month')
+		}*/
+
+		//设置上个月：1.先获取上个月还可以排几天，2. 上个月的最后一天是几号
+		
+/*		for(var i=0; i<curFirstDay.getDay(); i++){
+			$('.main td').eq(curFirstDay.getDay()-1-i)
+						 .text(preLastDay.getDate()-i)
+						 .addClass('pre-month')
+		}*/
+		
+		//设置下个月：1.获取下个月可以排的天数，直接从1开始
+/*		for(var i=0; i<7-curLastDay.getDay()-1; i++){
+			$('.main td').eq(curFirstDay.getDay()+curLen+i)
+						 .text('0'+(i+1))
+						 .addClass('next-month')
+		}
+
+		$('.main td').not('.pre-month').not('.cur-month').not('.next-month').addClass('hide')
+	}
+	calendar();
+
+	$('.pre').on('click',function(){
+		month--;
+		if(month===0){
+			month=12;
+			year--;
+		}
+		calendar();
+	})
+	$('.next').on('click',function(){
+		month++;
+		if(month===12){
+			month=1;
+			year++;
+		}
+		calendar()
+	})*/
+
+//---------封装
+var calendarModel=(function(){
+
+	function Calendar($ct,year,month){
+
+		this.$ct=$ct;
+		if(year){
+			this.year=year;
+		}else{
+			this.year = new Date().getFullYear();
+		}
+		if(month){
+			this.month=month;
+		}else{
+			this.month= new Date().getMonth()+1;
+		}
+
+		this.prepare();
+		
+		this.init();
+		this.render();
+		this.addEvent();
+		
+
+	}
+	Calendar.prototype={
+		constructor : 'Calendar',
+		prepare: function(){
+					//初始化
+
+					this.$ct.html('<div class="header"><div class="header-date">2017年2月</div><div class="pre"></div><div class="next"></div></div><table class="main"></table>')
+					this.$ct.find('.main').append('<thead><tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr></thead>')
+
+					var $tbody=$(document.createElement('tbody'))
+					for(var i=0; i<6; i++){
+						$tbody.html($tbody.html()+'<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>')
+					}
+					this.$ct.find('.main').append($tbody);
+			},
+		init: function (){		
+
+
+					this.curMon=this.month-1,
+					this.curFirstDay=new Date(this.year,this.curMon,1),
+					this.preLastDay= new Date(this.year,this.curMon,0),
+					this.curLastDay=new Date(this.year,this.curMon+1,0);
+					this.curLen=this.curLastDay.getDate();	
+
+					this.$td=this.$ct.find('.main td');
+					this.$next=this.$ct.find('.next');
+					this.$pre=this.$ct.find('.pre');
+			},
+
+			render: function(){
+						//console.log(this.curFirstDay)
+						this.$td.removeClass().empty();		
+						this.$ct.find('.header-date').text(this.year+'年'+(this.month)+'月')
+
+						for (var i=0; i<this.curLen; i++){
+						//知道第一天的位置还有这个月的天数。
+						this.$td.eq(this.curFirstDay.getDay()+i)
+									 .text(this.isDouble(i+1))
+									 .addClass('cur-month')
+						}
+
+						//设置上个月		
+						for(var i=0; i<this.curFirstDay.getDay(); i++){
+							this.$td.eq(this.curFirstDay.getDay()-1-i)
+										 .text(this.preLastDay.getDate()-i)
+										 .addClass('pre-month')
+						}
+
+						//设置下个月
+
+						for(var i=0; i<7-this.curLastDay.getDay()-1; i++){
+							this.$td.eq(this.curFirstDay.getDay()+this.curLen+i)
+										 .text('0'+(i+1))
+										 .addClass('next-month')
+						}
+						//设置无法显示的td
+						this.$td.not('.pre-month').not('.cur-month').not('.next-month').addClass('hide')
+
+
+					},
+
+			addEvent: function(){
+						var self=this;
+						this.$pre.on('click',function(){
+							self.month--;
+							if(self.month===0){
+								self.month=12;
+								self.year--;
+							}
+							self.init();
+							self.render();
+						})
+						this.$next.on('click',function(){
+							self.month++;
+							if(self.month===12){
+								self.month=1;
+								self.year++;
+							}
+							self.init();
+							self.render();
+						})
+
+						this.$ct.find('.cur-month').on('click',function(){
+							console.log(self.year+ '/' +self.month+ '/' +this.innerText)
+						})
+
+					},
+
+			isDouble: function(n){
+						var str=n+'';
+						if(str.length<2){
+							str='0'+str;
+						}
+						return str
+					}
+	}
+
+	return{
+		init: function($ct,year,month){
+			$ct.each(function(){
+				new Calendar($(this),year,month)
+			})		}
+	}
+}())
+
+//
+calendarModel.init($('.calendar'))
+</script>
+</body>
+</html>

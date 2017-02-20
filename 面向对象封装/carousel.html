@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播图片</title>
+<style>
+	body ,ul{
+		padding: 0;
+		margin:0;
+	}
+	li{
+		list-style: none;
+	}
+	a{
+		display: inline-block;
+	}
+	.carousel{
+		position: relative;
+		width: 300px;		
+		overflow: hidden;
+	}
+	.carousel img{
+		width: 300px;
+	}
+	.img-play{
+		position: relative;
+		top:0;
+		left: 0;
+		font-size:0;
+		width: 1200px;
+		overflow: hidden;
+	}
+	.img-play:after{
+		content: '';
+		display: block;
+		clear: both;
+	}
+	.img-play li{
+		float: left;
+
+	}
+	.switch li{
+		position: absolute;
+		top:50%;
+		margin-top:-20px;
+		width: 40px;
+		height: 40px;
+		border-radius: 40px;
+		background-color: rgba(51,51,51,0.6);
+	}
+	.switch li:hover{
+		background-color: rgba(78,68,60,1);
+	}
+	.switch li a{
+		display: block;
+		font-weight: :bold;
+		line-height: 40px;
+		text-decoration: none;
+		color: #fff;
+		font-size: 30px;
+		text-align: center;
+	}
+
+
+	.back{
+		left: 0px;
+	}
+	.forth{
+		right:0px;
+	}
+
+	.tab{
+		position: absolute;
+		bottom: 16px;
+		left: 50%;
+		margin-left: -44px;
+		font-size: 0;
+	}
+	.tab:after{
+		content: '';
+		display: block;
+		clear: both;
+	}
+	.tab li{
+		margin-left: 6px;
+		display: inline-block;
+		position: relative;
+		width: 16px;
+		height: 4px;
+		background-color: #fff;
+		border-radius: 4px;
+		cursor: pointer;
+		
+	}
+	.carousel .show{
+		display: block;
+	}
+	.carousel .active{
+		background-color: #666666;
+	}
+	.tab li>img{
+		border: 1px solid #fff;
+		display: none;
+		width: 60px;
+		height: 40px;
+		position: absolute;
+    	top: -45px;
+    	left: -22px;
+}
+
+	}
+</style>
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+
+<body>
+	<div class="carousel">
+		<ul class="img-play">
+			<li><a href="javascript:;"><img src="http://cdn.jirengu.com/book.jirengu.com/img/1.jpg" alt=""></a></li>
+			<li><a href="javascript:;"><img src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg" alt=""></a></li>
+			<li><a href="javascript:;"><img src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg" alt=""></a></li>
+			<li><a href="javascript:;"><img src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg" alt=""></a></li>
+		</ul>
+		<ul class="switch">
+			<li class="back"><a href="javascript:;"><</a></li>
+			<li class="forth"><a href="javascript:;">></a></li>
+		</ul>
+		<ul class="tab">
+			<li class="active"><img src="" alt="#"></li>
+			<li><img src="" alt="#"></li>
+			<li><img src="" alt="#"></li>
+			<li><img src="" alt="#"></li>
+		</ul>
+	</div>
+
+	<div class="carousel">
+		<ul class="img-play">
+			<li><a href="javascript:;"><img src="http://cdn.jirengu.com/book.jirengu.com/img/1.jpg" alt=""></a></li>
+			<li><a href="javascript:;"><img src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg" alt=""></a></li>
+			<li><a href="javascript:;"><img src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg" alt=""></a></li>
+			<li><a href="javascript:;"><img src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg" alt=""></a></li>
+		</ul>
+		<ul class="switch">
+			<li class="back"><a href="javascript:;"><</a></li>
+			<li class="forth"><a href="javascript:;">></a></li>
+		</ul>
+		<ul class="tab">
+			<li class="active"><img src="" alt="#"></li>
+			<li><img src="" alt="#"></li>
+			<li><img src="" alt="#"></li>
+			<li><img src="" alt="#"></li>
+		</ul>
+	</div>
+<script>
+/*	var $carousel=$('.carousel')
+		$imgCt=$('.img-play'),
+		$imgList=$imgCt.find('li'),
+		$tab=$('.tab li'),
+		$back=$('.back'),
+		$forth=$('.forth')
+		imgLen=$imgList.length;
+
+	var firstImg=$imgList.eq(imgLen-1).clone(),
+		lastImg=$imgList.eq(0).clone();
+		imgWidth=$carousel.width();
+
+	var pageIndex=0;
+
+		/*loop prepare*/
+
+		/*$imgCt.prepend(firstImg);	
+		$imgCt.append(lastImg);
+		$imgCt.css({
+			width:imgWidth*(imgLen+2),
+			left:-imgWidth
+		});
+	var pageOnoff = true;
+
+	function tabShow () {
+		$tab.removeClass('active').eq(pageIndex).addClass('active')
+
+	}
+
+	function preImg(n){
+		if(!pageOnoff) return ;
+
+		pageOnoff=false;
+		$imgCt.animate({
+			left:'+='+imgWidth*n
+		},500,function(){
+			pageIndex-=n;
+			if (pageIndex==-1){
+				pageIndex=3;
+				$imgCt.css('left',-imgWidth*imgLen);
+			}
+			tabShow();
+			pageOnoff = true;
+		})
+
+	}
+
+
+	function nextImg(n){
+		if(!pageOnoff) return ;
+		pageOnoff=false;
+
+		$imgCt.animate({
+			left:'-='+imgWidth*n
+		},500,function(){
+			pageIndex+=n;
+
+			if (pageIndex===imgLen){
+				pageIndex=0;
+				$imgCt.css('left',-imgWidth);
+			}
+
+			tabShow();
+
+			pageOnoff = true;
+		})
+
+	}
+
+	var forthTimer=null;
+	var backTimer=null;
+
+	$forth.on('click',function(){
+
+		nextImg(1);
+			
+	})
+
+	$back.on('click',function(){
+		
+			preImg(1);	
+
+	})
+
+
+
+	$tab.on('click',function(){
+
+		var nowIndex = $('.tab>li.active').index();
+
+		var featureIndex=$(this).index();
+
+		if(nowIndex<featureIndex){
+
+			nextImg(featureIndex-nowIndex);
+
+		}else if(nowIndex>featureIndex){
+
+			preImg(nowIndex-featureIndex)
+
+		}
+
+	})*/
+
+
+	/*略缩图*/
+
+/*	var $tinyImg = $tab.find('img');
+	var imgSrc=['http://cdn.jirengu.com/book.jirengu.com/img/1.jpg','http://cdn.jirengu.com/book.jirengu.com/img/2.jpg','http://cdn.jirengu.com/book.jirengu.com/img/3.jpg','http://cdn.jirengu.com/book.jirengu.com/img/4.jpg'];
+	// console.log($tinyImg.length)
+	for(var i=0; i<$tinyImg.length; i++){
+		$tinyImg.eq(i).attr('src',imgSrc[i]);
+	}
+
+	$tab.on({
+		mouseenter:function(){
+				$('.show').removeClass('show')
+				$tinyImg.eq($(this).index()).addClass('show')	
+			},
+		mouseout:function(){
+				$('.show').removeClass('show')
+			}
+	})*/
+
+var shuffleCarousel=(function(){
+		function Carousel($ct){
+		this.$ct=$ct;
+		this.init();
+		this.addEvent();
+	}
+
+	Carousel.prototype.init=function(){
+
+		this.pageIndex=0;
+	var $imgCt=this.$imgCt=this.$ct.find('.img-play'),
+		$imgList=this.$imgList=$imgCt.find('li'),
+		$tab=this.$tab=this.$ct.find('.tab li'),
+		$back=this.$back=this.$ct.find('.back'),
+		$forth=this.$forth=this.$ct.find('.forth'),
+		imgLen=this.imgLen=$imgList.length;
+
+		this.pageOnoff = true;
+
+		var firstImg=$imgList.eq(imgLen-1).clone(),
+		lastImg=$imgList.eq(0).clone(),
+		imgWidth=this.imgWidth=this.$ct.width();
+
+		$imgCt.prepend(firstImg);	
+		$imgCt.append(lastImg);
+		$imgCt.css({
+			width:imgWidth*(imgLen+2),
+			left:-imgWidth
+		});
+	}
+
+	Carousel.prototype.preImg=function(n){
+		if(!this.pageOnoff) return ;
+		var _this=this
+		this.pageOnoff=false;
+		this.$imgCt.animate({
+			left:'+='+this.imgWidth*n
+		},500,function(){
+			_this.pageIndex-=n;
+			if (_this.pageIndex==-1){
+				_this.pageIndex=3;
+				_this.$imgCt.css('left',-_this.imgWidth*_this.imgLen);
+			}
+			_this.tabShow();
+			_this.pageOnoff = true;
+		})
+	}
+	Carousel.prototype.nextImg=function(n){
+		if(!this.pageOnoff) return ;
+		var _this=this
+		this.pageOnoff=false;
+
+		this.$imgCt.animate({
+			left:'-='+this.imgWidth*n
+		},500,function(){
+			_this.pageIndex+=n;
+			if (_this.pageIndex===_this.imgLen){
+				_this.pageIndex=0;
+				_this.$imgCt.css('left',-_this.imgWidth);
+			}
+			_this.tabShow();
+			_this.pageOnoff = true;
+		})		
+	}
+	Carousel.prototype.tabShow=function(){
+		this.$tab.removeClass('active').eq(this.pageIndex).addClass('active')
+	}
+
+
+
+	Carousel.prototype.addEvent=function(){
+		var _this=this;
+
+		this.$forth.on('click',function(){
+
+			_this.nextImg(1);
+				
+		})
+		this.$back.on('click',function(){
+				_this.preImg(1);	
+		})
+
+		this.$tab.on('click',function(){
+
+			var nowIndex = _this.$ct.find('.tab>li.active').index();
+			var featureIndex=$(this).index();
+			if(nowIndex<featureIndex){
+				_this.nextImg(featureIndex-nowIndex);
+			}else if(nowIndex>featureIndex){
+				_this.preImg(nowIndex-featureIndex)
+			}
+
+		})
+	}
+
+	return {
+		init:function($ct){
+			$ct.each(function(){
+				new Carousel($(this))
+			})
+		}
+	}
+}())
+
+	shuffleCarousel.init($('.carousel'))
+
+	/*new Carousel($('.carousel').eq(0));
+
+	new Carousel($('.carousel').eq(1));*/
+</script>
+</body>
+</html>

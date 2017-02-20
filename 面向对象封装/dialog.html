@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>对话框的封装</title>
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+<style>
+	a{
+		text-decoration: none;
+	}
+	.dialog{
+		display: none;
+	}
+	.dialog-mask{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%; 
+		background-color: #333;
+		opacity: 0.6;
+	}
+	.dialog-wrap{
+		position: absolute;
+		top:50%;
+		left: 50%;
+		transform: translate(-50%, -50%); 
+		z-index: 10;
+		min-width: 300px;
+		min-height: 140px;
+		overflow: hidden;
+		border-radius: 10px;
+	}
+	.dialog-header{
+		display: none;
+		padding: 12px;
+		background-color: #ca2b2b;
+	}
+	.dialog-header:after{
+		content: '';
+		display: block;
+		clear: both;
+	}
+	.dialog-header > p{
+		padding: 0;
+		margin:0;
+		float: left;
+		color: #fff;
+	}
+	.dialog-header > a{
+		color: #fff;
+		float: right;
+	}
+	.dialog-body{
+		padding: 12px;
+		min-height: 140px;
+		background-color: #fff;
+	}
+	.dialog-footer{
+		position: absolute;
+		left: 0;
+		bottom:10px;
+		width: 100%;
+		text-align: center;
+	}
+	.dialog-close , .dialog-confirm{
+		padding: 4px 6px ;
+		display: inline-block;
+		color: #fff;
+		background-color: #ca2b2b;
+		border-radius: 6px;
+	}
+
+	.dialog-close {	
+		margin-right:4px;
+	}
+	.dialog-confirm{
+		display: none;
+		margin-left:4px;
+	}
+</style>
+</head>
+
+<body>
+	<button class="popup-mod">弹窗</button>
+	<button class="dialog-mod">对话框</button>
+	<button class="btn2">内容是html</button>
+	<button class="btn1">这是一个无法关闭的窗口</button>
+	
+<!-- 	<div class="dialog">
+	<div class="dialog-mask"></div>
+	<div class="dialog-wrap">
+		<div class="dialog-header">
+			<p></p>
+			<a href="javascript:;">X</a>
+		</div>
+		<div class="dialog-body">
+			<div class="dialog-content"></div>
+			<div class="dialog-footer">
+				<a class="dialog-close" href="javascript">关闭</a>
+				<a class="dialog-confirm" href="javascript">确定</a>
+			</div>
+		</div>
+	</div>
+</div> -->
+<script>
+var dialog=(function(){
+	function Modal (data){
+
+		this.createDialog();
+		this.init();
+		this.addEvent();
+	}
+	Modal.prototype={
+		constructor:Modal,
+		createDialog:function(){
+			if($('.dialog').length>0) return ;
+			var str='';
+			str+=''
+			str+='<div class="dialog"><div class="dialog-mask"></div><div class="dialog-wrap">'
+			    +'<div class="dialog-header"><p></p><a href="javascript:;">X</a></div>'
+			    +'<div class="dialog-body"><div class="dialog-content"><p></p></div><div class="dialog-footer"><a class="dialog-close" href="javascript">关闭</a><a class="dialog-confirm" href="javascript">确定</a></div></div></div></div>'
+			$(document.body).append(str);
+		},
+		init : function(){
+			this.$dialog=$('.dialog');
+			this.$head=	this.$dialog.find('.dialog-header')	
+			this.$title=this.$dialog.find('.dialog-header p');
+			this.$content=this.$dialog.find('.dialog-content p');
+			//btn
+			this.$hide=this.$dialog.find('.dialog-header a');	
+			this.$close=this.$dialog.find('.dialog-close');
+			this.$confirm=this.$dialog.find('.dialog-confirm');
+		},
+		//加工btn按钮
+		addEvent : function(){
+			var self=this;
+			this.$hide.on('click',function(e){
+				
+				e.preventDefault()
+				self.emptyAny();
+			})
+			this.$close.on('click',function(e){
+				
+				e.preventDefault();
+				alert('关闭');
+				self.emptyAny();
+			})
+			this.$confirm.on('click',function(e){
+				
+				e.preventDefault()
+				alert('确定');
+				self.emptyAny();
+			})
+		},
+		//默认格式
+		defaultOpt : {
+			title : '',
+			content :  '',
+			isShowClose : true,
+			isShowConfirm : false
+		},
+
+		open : function(data){
+			data=this.transData(data);
+			this.dealWidth(data);
+			console.log(data)
+		},
+		//处理data，有obj和字符串2种格式
+		transData : function(data){
+			if(typeof data === 'object'){
+				return $.extend({} , this.defaultOpt , data)
+			}else{
+				var strData={
+					content : data
+				};
+				return $.extend({}, this.defaultOpt , strData)
+			}
+
+		},
+		//加载data
+		dealWidth : function(data){
+			this.$dialog.show();
+			if(data.title===''){
+				this.$head.hide();
+			}else{
+				this.$title.text(data.title)
+				this.$head.show();
+			}
+
+			this.$content.html(data.content)
+
+			if(data.isShowClose){
+				this.$close.show();
+			}else{
+				this.$close.hide();
+			}
+
+			if(data.isShowConfirm){
+				this.$confirm.show();
+			}else{
+				this.$confirm.hide();
+			}
+		},
+		//关闭弹窗后，弹窗的清理
+	emptyAny : function(){
+		this.$title.empty();
+		this.$content.empty();
+		this.$title.empty();
+		this.$content.empty();
+		this.$dialog.hide();
+	}
+
+	}
+	return new Modal();
+}())
+
+$('.popup-mod').on('click',function(){
+	dialog.open('这是一段话')
+})
+$('.dialog-mod').on('click',function(){
+	dialog.open({
+		title:'欢迎您登陆',
+		content: '恭喜您登陆成功！！！！',
+		isShowClose: true,
+		isShowConfirm: true
+	})
+})
+$('.btn1').on('click',function(){
+	dialog.open({
+		content:'这个窗口无法关闭',
+		isShowClose: false
+	})
+})
+$('.btn2').on('click',function(){
+	dialog.open('<ul><li></li><li></li><li></li></ul>')
+})
+
+</script>
+</body>
+</html>

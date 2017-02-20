@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style>
+	body,ul{
+		padding: 0;
+		margin: 0;
+	}
+	.img-load{
+		margin: 0 auto;
+		width: 780px;
+	}
+	.img-load:after{
+		content: '';
+		display: block;
+		clear: both;
+	}
+	li{
+		list-style: none;
+		float: left;
+		margin: 20px;
+	}
+	a{
+		display: block;
+	}
+	.img-load img{
+		width: 300px;
+		height:300px;
+
+	}
+</style>
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+	<ul class="img-load">
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/2.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/1.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/3.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/4.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/5.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/6.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/7.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/8.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/9.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/10.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/11.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/12.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/13.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/14.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/15.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/16.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/17.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/18.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/19.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/20.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/21.jpg' alt="">
+		</a></li>
+		<li><a href="#">
+			<img src="http://img.zcool.cn/community/01443f564897a432f87512f6eed753.gif" ready-src='http://cdn.jirengu.com/book.jirengu.com/img/22.jpg' alt="">
+		</a></li>
+	</ul>
+
+	<p class="word">hello</p>
+<script>
+
+var Lazy=(function(){
+	
+	function Exposure ($target,callback,boolen) {
+		this.$target=$target;
+		this.callback=callback; 
+		this.flag=boolen;
+		this.addEvent();
+
+		this.flag ? this.check() : this.one();
+	}
+
+	Exposure.prototype.isVisibility=function(){
+		var screenWidth=$(window).height();
+		var scrollTop=$(window).scrollTop();
+		var offsetTop=this.$target.offset().top;
+		var $nodeWidth=this.$target.outerWidth(true);
+		if(screenWidth+scrollTop>offsetTop && scrollTop<offsetTop+$nodeWidth){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	Exposure.prototype.check=function (){
+		if(this.isVisibility()){	
+			this.callback(this.$target);
+		}
+	}
+	Exposure.prototype.one=function(){
+		if(this.isVisibility()){	
+			this.callback(this.$target.not('.had-see'));
+			this.$target.addClass('had-see')
+		}
+	}
+
+	Exposure.prototype.addEvent=function (){
+		var _this=this
+		$(window).on('scroll',function(){	
+			if(_this.flag){
+				_this.check();
+			}else{
+				_this.one();
+			}
+		})
+	}
+
+	return {
+		init:function($target,callback,boolen){
+			$target.each(function(){
+				new Exposure($(this),callback,boolen)
+			})
+		}
+	}
+}())
+
+
+//-----------Lazy的参数分别：$对象，看到对象后执行的回调，是否循环（true：循环）
+
+
+
+Lazy.init($('.img-load img'),imgLoad,false);
+
+
+/*Lazy.init($('.word'),function($target){
+		$target.text($target.text()+'  '+'world')
+	},true)*/
+
+
+function imgLoad ($node){
+	$node.each(function(){
+			var readySrc=$(this).attr('ready-src');
+			$(this).attr('src',readySrc);
+	})
+}
+
+</script>
+</body>
+</html>

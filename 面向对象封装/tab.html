@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>tab切换</title>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	
+</head>
+
+<style>
+	ul,li{
+		padding: 0;
+		margin:0;
+		list-style: none;
+	}
+	a{
+		text-decoration: none;
+		color: #333;
+	}
+	.tab{
+		margin: 0 auto;
+		padding: 14px;
+		width: 600px;
+		border: 1px solid #cccccc;
+		border-radius: 4px;
+
+	}
+	.tab-head{
+		border-bottom: 1px solid #cccccc;
+	}
+	.tab-head:after{
+		content: '';
+		display: block;
+		clear: both;
+	}
+	.tab-head li{
+		float: left;
+		padding: 10px;
+		margin-right: 10px;
+	}
+	.tab-head .active{
+		margin-bottom: -1px;
+		border-radius: 4px 4px 0 0;
+		border:1px solid #ccc;
+		border-bottom-color: #fff;
+		margin-bottom: -1px;
+	}
+	.tab-content li{
+		height: 200px;
+		padding: 10px;
+		display: none;
+	}
+	.tab-content .show{
+		display: block;
+	}
+</style>
+<body>
+	<div class="tab">
+		<ul class='tab-head'>
+			<li class="active"><a href="javascript:;">选项一</a></li>
+			<li><a href="javascript:;">选项二</a></li>
+			<li><a href="javascript:;">选项三</a></li>
+		</ul>
+		<ul class="tab-content">
+			<li class="show">内容1111</li>
+			<li>内容22</li>
+			<li>内容333333</li>
+		</ul>
+	</div>
+		<div class="tab">
+		<ul class='tab-head'>
+			<li class="active"><a href="javascript:;">选项一</a></li>
+			<li><a href="javascript:;">选项二</a></li>
+			<li><a href="javascript:;">选项三</a></li>
+		</ul>
+		<ul class="tab-content">
+			<li class="show">内容1111</li>
+			<li>内容22</li>
+			<li>内容333333</li>
+		</ul>
+	</div>
+<script>
+
+/*	var $tab=$('.tab'),
+	 	$tabHead=$('.tab-head'),
+	 	$tabHeadLi=$('.tab-head').find('li'),
+	 	$tabContentLi=$('.tab-content').find('li');
+
+	 	$tabHead.on('click','li',function(){
+	 		$tabHeadLi.removeClass('active');
+	 		$tabContentLi.removeClass('show');
+	 		$(this).addClass('active');
+	 		$tabContentLi.eq($(this).index()).addClass('show')
+		})*/
+
+	 	function Tab($ct){	
+	 		this.$ct=$ct;
+	 		this.init();
+	 		this.bind();
+	 	}
+
+	 	Tab.prototype.init=function(){
+	 		this.$headerLi=this.$ct.find('.tab-head>li')
+	 		this.$contentLi=this.$ct.find('.tab-content>li')
+	 	}
+
+	 	Tab.prototype.bind=function(){
+	 		var _this=this;
+	 		this.$headerLi.on('click',function(){
+	 			_this.$headerLi.removeClass('active');
+	 			_this.$contentLi.removeClass('show');
+	 			$(this).addClass('active');
+	 			_this.$contentLi.eq($(this).index()).addClass('show');
+
+	 		})
+	 	}
+
+	 	var tab1=new Tab($('.tab').eq(0))
+	 	var tab2=new Tab($('.tab').eq(1))
+</script>
+
+</body>
+</html>
