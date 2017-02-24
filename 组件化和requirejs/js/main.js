@@ -6,7 +6,7 @@ require.config({
 	}
 })
 
-require(['jquery','tool/carousel','tool/water'],function($,Carousel,Water){
+require(['jquery','tool/carousel','tool/water','./tool/GoTop'],function($,Carousel,Water,Gotop){
 	//console.log(Carousel)
 	Carousel.init($('.carousel'))
 
@@ -42,5 +42,5 @@ require(['jquery','tool/carousel','tool/water'],function($,Carousel,Water){
 	    isImgLoad();
 	  }
 	}
-
+	//var goTop1=GoTop($(document.body));
 })
